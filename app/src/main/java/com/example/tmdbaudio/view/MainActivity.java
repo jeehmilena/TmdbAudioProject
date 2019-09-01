@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 
 import com.example.tmdbaudio.R;
 import com.example.tmdbaudio.adapter.RecyclerViewAdapater;
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private AlbumViewModel viewModel;
     private ProgressBar progressBar;
     private RecyclerViewAdapater adapter;
+    private SearchView searchView;
+    private String bandName = "Aerosmith";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +38,11 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerView.setAdapter(adapter);
 
-        //setando a nova lista para o adapter do recyclerView
-        viewModel.getAlbuns("Aerosmith");
-        viewModel.albunsLiveData.observe(this, (List<Album> albuns) -> {
-            adapter.setResult(albuns);
+        viewModel.getAlbuns(bandName);
+        viewModel.getAlbumLiveData().observe(this, (List<Album> albuns) -> {
+            adapter.setUpdate(albuns);
         });
 
-        //mudando a visibilidade da barra de progresso de acordo com o retorno do isLoading
         viewModel.isLoading.observe(this, (Boolean loading) -> {
             if (loading){
                 progressBar.setVisibility(View.VISIBLE);
@@ -49,12 +50,29 @@ public class MainActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
             }
         });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String text) {
+                bandName = text;
+                adapter.clear();
+                viewModel.getAlbuns(bandName);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String text) {
+                return false;
+            }
+        });
     }
 
     private void initViews() {
         recyclerView = findViewById(R.id.recyclerView);
         progressBar = findViewById(R.id.progress_bar);
+        searchView = findViewById(R.id.searchView);
         adapter = new RecyclerViewAdapater(albuns);
         viewModel = ViewModelProviders.of(this).get(AlbumViewModel.class);
+        recyclerView.setAdapter(adapter);
     }
 }

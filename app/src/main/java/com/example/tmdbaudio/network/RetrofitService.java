@@ -13,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitService {
     private static final String BASE_URL = "https://theaudiodb.com/api/v1/json/";
-    private static final String API_KEY= "195003";
+    private static final String API_KEY= "195003/";
     private static Retrofit retrofit;
 
     private static Retrofit getRetrofit() {
@@ -37,7 +37,7 @@ public class RetrofitService {
 
             // inicializamos o retrofit com as configurações
             retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(BASE_URL+API_KEY)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(httpClient.build())

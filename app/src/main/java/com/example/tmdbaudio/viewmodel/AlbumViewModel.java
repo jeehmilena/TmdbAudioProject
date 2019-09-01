@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.tmdbaudio.model.Album;
@@ -30,7 +31,11 @@ public class AlbumViewModel extends AndroidViewModel {
         super(application);
     }
 
-    public void getAlbuns( String artista) {
+    public LiveData<List<Album>> getAlbumLiveData() {
+        return albunsLiveData;
+    }
+
+    public void getAlbuns(String artista) {
 
         disposable.add(
                 getApiService().getAllAlbunArtist(artista)

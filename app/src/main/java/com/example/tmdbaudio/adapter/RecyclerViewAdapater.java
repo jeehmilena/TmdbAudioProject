@@ -41,15 +41,18 @@ public class RecyclerViewAdapater extends RecyclerView.Adapter<RecyclerViewAdapa
         return albums.size();
     }
 
-    //método que atualiza a lista do adapter
-    public void setResult(List<Album> albums) {
-        //verificar se o result já tem informação
-        if (albums.size() == 0) {
+    public void setUpdate(List<Album> albums) {
+        if (this.albums.isEmpty()){
             this.albums = albums;
-        } else {
+        }else {
             this.albums.addAll(albums);
-            notifyDataSetChanged();
         }
+        notifyDataSetChanged();
+    }
+
+    public void clear(){
+        this.albums.clear();
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -65,9 +68,9 @@ public class RecyclerViewAdapater extends RecyclerView.Adapter<RecyclerViewAdapa
         }
 
         public void bind(Album album) {
-            titulo.setText(album.getStrArtist());
+            titulo.setText(album.getStrAlbum());
 
-            Picasso.get().load("https://www.theaudiodb.com/images/media/album/thumb/"+album.getStrAlbumThumb()).into(img);
+            Picasso.get().load(album.getStrAlbumThumb()).into(img);
 
         }
     }

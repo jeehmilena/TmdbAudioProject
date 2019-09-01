@@ -4,11 +4,12 @@ import com.example.tmdbaudio.model.Artista;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface API {
 
-    @GET("/track-top10.php")
+    @GET("searchalbum.php")
     Observable<Artista> getAllAlbunArtist(
             @Query("s") String artista);
 }
